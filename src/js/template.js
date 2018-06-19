@@ -30,7 +30,7 @@
 
             },
             callbacks: {
-
+                onInit () {}
             }
         };
 
@@ -65,6 +65,11 @@
             // you can add more functions like the one below and
             // call them like the example bellow
             this.initElement();
+
+            // On Init callback
+            if(this.settings.callbacks.onInit && $.isFunction(this.settings.callbacks.onInit)) {
+                this.settings.callbacks.onInit().call(this);
+            }
         },
 
         /*
