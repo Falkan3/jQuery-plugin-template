@@ -24,7 +24,6 @@
     const pluginName = "Template",
         pluginNameLower = pluginName.toLowerCase(),
         objPrefix = 'template--',
-        objThis = this,
 
         defaults = {
             elements: {
@@ -34,6 +33,7 @@
                 onInit () {}
             }
         };
+    let objThis = null;
 
     // The actual plugin constructor
     function Plugin(element, options) {
@@ -46,6 +46,7 @@
         this.settings = $.extend(true, {}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
+        objThis = this;
 
         //dynamic vars
         this.html = $('html');
@@ -69,7 +70,7 @@
 
             // On Init callback
             if(this.settings.callbacks.onInit && $.isFunction(this.settings.callbacks.onInit)) {
-                this.settings.callbacks.onInit().call(this);
+                this.settings.callbacks.onInit.call(this);
             }
         },
 
