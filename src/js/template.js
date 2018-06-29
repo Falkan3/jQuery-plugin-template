@@ -74,7 +74,7 @@
         },
 
         /*
-         * Main function for initializing popup body
+         * Main function for initializing
          */
         initElement () {
             this.initElement_GenerateDefaults();
