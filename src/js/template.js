@@ -23,7 +23,8 @@
     // Create the defaults once
     const pluginName = "Template",
         pluginNameLower = pluginName.toLowerCase(),
-        obj_prefix = 'template--',
+        objPrefix = 'template--',
+        objThis = this,
 
         defaults = {
             elements: {
@@ -76,8 +77,6 @@
          * Main function for initializing popup body
          */
         initElement () {
-            let objThis = this;
-
             this.initElement_GenerateDefaults();
 
             //find references
@@ -87,7 +86,7 @@
          * Set default values of settings if not specified
          */
         initElement_GenerateDefaults () {
-            let objThis = this;
+
         },
 
         /* ------------------------------ HELPERS ------------------------------- */
