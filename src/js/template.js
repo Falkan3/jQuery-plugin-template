@@ -97,7 +97,7 @@
 
             if(message instanceof Array) {
                 for (let value of message) {
-                    console.log(message);
+                    console.log(value);
                 }
             } else {
                 console.log(message);
