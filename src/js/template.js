@@ -33,7 +33,6 @@
                 onInit () {}
             }
         };
-    let objThis = null;
 
     // The actual plugin constructor
     function Plugin(element, options) {
@@ -46,7 +45,6 @@
         this.settings = $.extend(true, {}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
-        objThis = this;
 
         //dynamic vars
         this.html = $('html');
@@ -172,10 +170,10 @@
 
             // Make it possible to access methods from public.
             // e.g `$element.plugin('method');`
-            if (typeof options === 'string') {
-                const args = Array.prototype.slice.call(arguments, 1);
-                data[options].apply(data, args);
-            }
+            // if (typeof options === 'string') {
+            //     const args = Array.prototype.slice.call(arguments, 1);
+            //     data[options].apply(data, args);
+            // }
         });
 
         if (instances.length === 1) {
