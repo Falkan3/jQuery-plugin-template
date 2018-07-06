@@ -26,14 +26,11 @@
         objPrefix = 'template--',
 
         defaults = {
-            elements: {
-
-            },
+            elements: {},
             callbacks: {
-                onInit () {}
+                onInit() {}
             }
         };
-    let objThis = null;
 
     // The actual plugin constructor
     function Plugin(element, options) {
@@ -46,19 +43,22 @@
         this.settings = $.extend(true, {}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
-        objThis = this;
+        this._nameLower = pluginNameLower;
+        this._objPrefix = objPrefix;
+        this._methods = methods;
 
         //dynamic vars
         this.html = $('html');
 
-        this.init();
+        this._methods.init(instance);
     }
 
     // Avoid Plugin.prototype conflicts
-    $.extend(Plugin.prototype, {
+    //$.extend(Plugin.prototype, {
+    const methods = {
         //if(jQuery.fn.pluginName) {...} - check for functions from other plugins (dependencies)
 
-        init () {
+        init(instance) {
 
             // Place initialization logic here
             // You already have access to the DOM element and
@@ -66,19 +66,19 @@
             // and this.settings
             // you can add more functions like the one below and
             // call them like the example bellow
-            this.initElement();
+            instance.initElement();
 
             // On Init callback
-            if(this.settings.callbacks.onInit && $.isFunction(this.settings.callbacks.onInit)) {
-                this.settings.callbacks.onInit.call(this);
+            if (instance.settings.callbacks.onInit && $.isFunction(instance.settings.callbacks.onInit)) {
+                instance.settings.callbacks.onInit.call(instance);
             }
         },
 
         /*
          * Main function for initializing
          */
-        initElement () {
-            this.initElement_GenerateDefaults();
+        initElement(instance) {
+            instance.initElement_GenerateDefaults();
 
             //find references
         },
@@ -86,16 +86,16 @@
         /*
          * Set default values of settings if not specified
          */
-        initElement_GenerateDefaults () {
+        initElement_GenerateDefaults(instance) {
 
         },
 
         /* ------------------------------ HELPERS ------------------------------- */
 
-        Log (message) {
-            console.log('*** ' + pluginName + ' ***');
+        Log(instance, message) {
+            console.log('*** ' + instance._name + ' ***');
 
-            if(message instanceof Array) {
+            if (message instanceof Array) {
                 for (let value of message) {
                     console.log(value);
                 }
@@ -107,11 +107,11 @@
         /*
          * Sort an array containing DOM elements by their position in the document (top to bottom)
          */
-        objSortByPositionInDOM (input, attr, attr2) {
+        objSortByPositionInDOM(input, attr, attr2) {
             //sort by position in DOM
             let _input = input;
             let output;
-            if(attr && attr2) {
+            if (attr && attr2) {
                 output = _input.sort(function (a, b) {
                     if (a[attr][attr2][0] === b[attr][attr2][0]) return 0;
                     if (!a[attr][attr2][0].compareDocumentPosition) {
@@ -155,10 +155,12 @@
 
             return output;
         },
-    });
+    };
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
+
+    //default outside method call: pluginInstance._methods.nameOfAnInnerFunction(pluginInstance, arg1, arg2...);
     $.fn[pluginName] = function (options) {
         let instances = [];
 
@@ -168,13 +170,6 @@
                 $.data(this, "plugin_" +
                     pluginName, instance);
                 instances.push(instance);
-            }
-
-            // Make it possible to access methods from public.
-            // e.g `$element.plugin('method');`
-            if (typeof options === 'string') {
-                const args = Array.prototype.slice.call(arguments, 1);
-                data[options].apply(data, args);
             }
         });
 
